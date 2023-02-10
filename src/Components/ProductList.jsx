@@ -1,11 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Search from "./Search";
+import { useRef } from "react";
 
 const ProductList = ({ products }) => {
+  let input = useRef();
+
+  function formSubmit(e) {
+    e.preventDefault();
+    let inputVal = input.current.value;
+    console.log(inputVal);
+    input.current.value = "";
+
+    let selectedProducts = [];
+
+    products.map((maxsulot, index) => {
+      if (maxsulot.title.toLowerCase().includes(inputVal.toLowerCase())) {
+        selectedProducts.push(maxsulot);
+      }
+    });
+    console.log(selectedProducts);
+  }
   return (
     <div className="row g-3">
-      <Search />
+      <form onSubmit={(e) => formSubmit(e)} className="d-flex w-100">
+        <input
+          ref={input}
+          type="text"
+          className="ms-auto me-auto mt-4 mb-4 w-50 form-check-input p-4 form-control"
+          placeholder="Product..."
+        />
+      </form>
       {products.map((product, index) => (
         <div className="col-md-6 col-lg-3" key={index}>
           <div className="card" aria-hidden="true">
